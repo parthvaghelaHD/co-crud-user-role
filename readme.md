@@ -9,18 +9,17 @@ This project includes:
 - Security middlewares (helmet, cors, xss-clean, mongo sanitize)
 
 
-## ⚙️ Installation
+## Installation
 
 ```bash
 git clone <repo-url>
 cd <project-folder>
 npm install
 
-🔐 Environment Variables
-
+Environment Variables
 Create a .env file based on the .env.local file
 
-🚀 Start the Server
+Start the Server
 npm start
 
 Server runs at: http://localhost:5000
