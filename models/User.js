@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
   lastName: { type: String, trim: true },
   username: { type: String, required: true, unique: true, trim: true },
   email: { type: String, required: true, unique: true, trim: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true, select: false  },
   role: { type: mongoose.Schema.Types.ObjectId, ref: 'Role' },
   createdAt: { type: Date, default: Date.now },
   active: { type: Boolean, default: true }

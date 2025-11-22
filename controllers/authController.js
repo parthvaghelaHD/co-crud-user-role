@@ -20,9 +20,7 @@ const signUp = async (req, res, next) => {
     const user = new User({ firstName, lastName, username, email, password: hash, role });
     await user.save();
 
-    const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
-
-    res.status(201).json({ user: { id: user._id, username: user.username, email: user.email }, token });
+    res.status(201).json({ user: { id: user._id, username: user.username, email: user.email } });
   } catch (err) {
     next(err);
   }
@@ -34,7 +32,7 @@ const login = async (req, res, next) => {
     const { emailOrUsername, password } = req.body;
     if (!emailOrUsername || !password) return res.status(400).json({ message: 'Missing fields' });
 
-    const user = await User.findOne({ $or: [{ email: emailOrUsername }, { username: emailOrUsername }] });
+    const user = await User.findOne({ $or: [{ email: emailOrUsername }, { username: emailOrUsername }] }).select('+password');
     if (!user) return res.status(401).json({ message: 'Invalid credentials' });
 
     const match = await bcrypt.compare(password, user.password);

@@ -13,7 +13,7 @@ const createUser = async (req, res, next) => {
     if (exist) return res.status(409).json({ message: 'User exists' });
 
     const hash = await bcrypt.hash(password, 10);
-    const user = new User({ firstName, lastName, username, email, password: hash, role });
+    const user = new User({ firstName, lastName, username, email, role });
     await user.save();
     res.status(201).json(user);
   } catch (err) { next(err); }
@@ -23,11 +23,8 @@ const createUser = async (req, res, next) => {
 const listUsers = async (req, res, next) => {
   try {
     const { search  = '', page = 1, limit = 20 } = req.query;
-    console.log(' req.query: ',  req.query);
     const regex = new RegExp(search , 'i');
-    console.log('regex: ', regex);
     const skip = (Math.max(1, page) - 1) * limit;
-    console.log('skip: ', skip);
 
     const filter = {
       $or: [
@@ -37,7 +34,6 @@ const listUsers = async (req, res, next) => {
         { lastName: regex }
       ]
     };
-      console.log('filter: ', filter);
 
     const [items, total] = await Promise.all([
       User.find(filter)
